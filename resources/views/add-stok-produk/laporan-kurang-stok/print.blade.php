@@ -49,9 +49,11 @@
     <table class="table table-striped table-bordered align-items-center" width="100%" cellspacing="0">
       <thead>
         <tr>
-          <th>{{ __('No') }}</th>
+          <th>{{ __('Produk ID') }}</th>
           <th>{{ __('Produk') }}</th>
-          <th>{{ __('Jumlah') }}</th>
+          <th>{{ __('Stok Sebelum') }}</th>
+          <th>{{ __('Stok Keluar') }}</th>
+          <th>{{ __('Stok Terakhir') }}</th>
           <th>{{ __('Tanggal') }}</th>
           <!-- <th>{{ __('Aksi') }}</th> -->
         </tr>
@@ -60,9 +62,16 @@
         @foreach ($data as $order)
         @foreach ($order->items as $item)
         <tr>
-          <td>{{$loop->iteration}}</td>
+          <td>PRD000{{$item->product->id}}</td>
           <td>{{$item->product->name}}</td>
-          <td>{{$item->quantity}}</td>
+          <!-- <td>{{$item->quantity}}</td> -->
+
+
+          <td><span class="badge badge-sm badge-secondary">{{$item->product->quantity + $item->quantity}}</span>
+          </td>
+          <td> <span class="badge badge-sm badge-danger">-{{$item->quantity}}</span></td>
+
+          <td><span class="badge badge-sm badge-primary">{{$item->product->quantity}}</span></td>
           <td>{{$item->created_at->format('d-m-Y')}}</td>
 
 

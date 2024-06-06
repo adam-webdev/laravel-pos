@@ -49,18 +49,23 @@
     <table class="table table-striped table-bordered align-items-center" width="100%" cellspacing="0">
       <thead>
         <tr>
-          <th>{{ __('No') }}</th>
+          <th>{{ __('Produk ID') }}</th>
           <th>{{ __('Produk') }}</th>
-          <th>{{ __('Jumlah') }}</th>
+          <th>{{ __('Stok Sebelum') }}</th>
+          <th>{{ __('Stok Masuk') }}</th>
+          <th>{{ __('Stok Terakhir ') }}</th>
           <th>{{ __('Tanggal') }}</th>
         </tr>
       </thead>
       <tbody>
         @foreach ($data as $asp)
         <tr>
-          <td>{{$loop->iteration}}</td>
+          <td>PRD000{{$asp->product->id}}</td>
           <td>{{$asp->product->name}}</td>
-          <td>{{$asp->jumlah}}</td>
+          <td><span class="badge badge-sm badge-secondary">{{$asp->product->quantity - $asp->jumlah}}</span></td>
+          <td> <span class="badge badge-sm badge-success">+{{$asp->jumlah}}</span></td>
+
+          <td><span class="badge badge-sm badge-primary">{{$asp->product->quantity}}</span></td>
           <td>{{ \Carbon\Carbon::parse($asp->tanggal)->format('d-m-Y');}}</td>
         </tr>
         @endforeach

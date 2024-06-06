@@ -76,10 +76,15 @@
     </div>
 
     <div class="nota-content">
-      <p>{{ $data['transaction_date'] }}</p>
+      <p>Tanggal: {{ $data['transaction_date'] }}</p>
       <p>No: {{ $data['transaction_number'] }}</p>
       <hr>
       <table>
+        <tr>
+          <td>Produk</td>
+          <td>Qty X Harga</td>
+          <td>Total</td>
+        </tr>
         @foreach($data['items'] as $item)
         <tr>
           <td>{{ $item['name'] }}</td>
@@ -123,7 +128,7 @@
       </table>
     </div>
 
-    <div class="nota-footer">
+    <div class=" nota-footer">
       <p>-- TERIMA KASIH --</p>
     </div>
   </div>

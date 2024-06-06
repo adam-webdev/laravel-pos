@@ -52,10 +52,12 @@
           <td>{{$order->id}}</td>
           <td>{{$item->product->name}}</td>
           <td>{{$item->quantity}}</td>
-          <td>{{$item->product->price}}</td>
+          <td>{{ config('settings.currency_symbol') }} {{number_format($item->product->price, 2)}}</td>
 
           <td>{{$order->getCustomerName()}}</td>
-          <td>{{ config('settings.currency_symbol') }} {{$order->formattedTotal()}}</td>
+          <!-- <td>{{ config('settings.currency_symbol') }} {{$order->formattedTotal()}}</td> -->
+          <td>{{ config('settings.currency_symbol') }} {{number_format($item->product->price * $item->quantity, 2)}}
+          </td>
           <td>{{ config('settings.currency_symbol') }} {{$order->formattedReceivedAmount()}}</td>
           <td>
             @if($order->receivedAmount() == 0)

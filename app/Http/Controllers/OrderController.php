@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderStoreRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Payment;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 use Illuminate\Http\Request;
@@ -64,32 +65,34 @@ class OrderController extends Controller
     {
         // Dummy data for example, you should retrieve this from your database
         $orderItems = OrderItem::with('product')->where('order_id', $id)->get();
-
+        $payments = Payment::select('amount')->where('order_id', $id)->first();
         $items = [];
         $totalPrice = 0;
-
         foreach ($orderItems as $orderItem) {
             $items[] = [
                 'name' => $orderItem->product->name,
                 'quantity' => $orderItem->quantity,
-                'price' => $orderItem->price,
-                'total' => $orderItem->quantity * $orderItem->price
+                'price' => $orderItem->product->price,
+                'total' => $orderItem->quantity * $orderItem->product->price
             ];
-            $totalPrice += $orderItem->quantity * $orderItem->price;
+            $totalPrice += $orderItem->quantity * $orderItem->product->price;
         }
 
+        // ddd($payments->amount);
+        // ddd($totalPrice);
+        $charge =  $payments->amount - $totalPrice;
         $data = [
             'store_name' => 'ABIGAIL',
             'store_address' => 'JL. Kenangan',
-            'transaction_date' => now()->format('d-m-Y'), // Assuming the current date
+            'transaction_date' => now()->format('d-m-Y'),
             'transaction_number' => str_pad($id, 11, '0', STR_PAD_LEFT),
             'items' => $items,
             'total_price' => $totalPrice,
             'total_item' => count($items),
-            'discount' => 0, // Example: Replace with actual discount logic if needed
-            'total_payment' => $totalPrice, // Example: Replace with actual payment logic if needed
-            'received' => $totalPrice, // Example: Replace with actual received amount if needed
-            'change' => 0 // Example: Replace with actual change amount if needed
+            'discount' => 0,
+            'total_payment' => $payments->amount,
+            'received' => $payments->amount,
+            'change' => $charge
         ];
 
         return view('orders.nota', compact('data'));
